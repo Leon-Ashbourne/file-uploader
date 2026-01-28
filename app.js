@@ -2,8 +2,12 @@ const express = require("express");
 const session = require("express-session");
 const path  = require("node:path");
 
+require("dotenv/config")
+
 const homeRouter = require("./routes/homeRouter")
 const libRouter = require("./routes/libRouter")
+const authLibraryRouter = require("./routes/auth/authLibraryRouter");
+const loginRouter = require("./routes/loginRouter");
 
 const app = express();
 
@@ -11,10 +15,15 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-//routes
-app.use("/library", libRouter);
-app.use("/", homeRouter )
+//assets
+const assetsUrl = path.join(__dirname, "public");
+app.use(express.static(assetsUrl));
+app.use(express.urlencoded({ extended: true }));
 
+//routes
+app.use("/library", authLibraryRouter, libRouter);
+app.use("/log-in", loginRouter)
+app.use("/", homeRouter )
 
 const PORT = 3030;
 app.listen(PORT, (error) => {

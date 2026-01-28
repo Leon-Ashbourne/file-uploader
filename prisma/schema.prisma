@@ -29,11 +29,11 @@ model Library {
 }
 
 model Folders {
-  id      Int     @id @default(autoincrement())
-  name    String  @db.VarChar(25)
-  library Library @relation(fields: [libId], references: [id])
-  libId   Int
-  files   Files[]
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(25)
+  library   Library  @relation(fields: [libId], references: [id])
+  libId     Int
+  files     Files[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
