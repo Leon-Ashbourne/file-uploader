@@ -5,7 +5,23 @@
     <body>
         <%- include("../navbar") %>
         <main>
-            <h1>Log in page!</h1>
+            <div>
+                <h2>Sign in to your account </h2>
+                Or <a href="/sign-up">Sign up for a new account</a>
+            </div>
+            <div>
+                <form action="/log-in" method="get">
+                    <section>
+                        <label for="username">username</label>
+                        <input type="text" id="username" name="username">
+                    </section>
+                    <section>
+                        <label for="password">password</label>
+                        <input type="password" id="password" name="password">
+                    </section>
+                    <button id="submit">Log in</button>
+                </form>
+            </div>
         </main>
     </body>
 </html>
