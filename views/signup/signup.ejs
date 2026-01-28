@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>Sign up</title>
+    </head>
+    <body>
+        <%- include("../navbar")%>
+        <main>
+            <form action="/signup">
+                <section>
+                    <label for="username">username</label>
+                    <input type="text" id="username" name="username">
+                </section>
+                <section>
+                    <label for="password">password</label>
+                    <input type="password" id="password" name="password">
+                </section>
+                <section>
+                    <label for="confirmPassword">confirm password</label>
+                    <input type="password" id="confirm-password" name="confirmPassword">
+                </section>
+                <button id="submit">Sign up</button>
+            </form>
+        </main>
+    </body>
+</html>

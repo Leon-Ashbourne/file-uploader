@@ -8,6 +8,7 @@ const homeRouter = require("./routes/homeRouter")
 const libRouter = require("./routes/libRouter")
 const authLibraryRouter = require("./routes/auth/authLibraryRouter");
 const loginRouter = require("./routes/loginRouter");
+const signupRouter = require("./routes/signupRouter")
 
 const app = express();
 
@@ -20,9 +21,13 @@ const assetsUrl = path.join(__dirname, "public");
 app.use(express.static(assetsUrl));
 app.use(express.urlencoded({ extended: true }));
 
+//session storage
+
+
 //routes
 app.use("/library", authLibraryRouter, libRouter);
 app.use("/log-in", loginRouter)
+app.use("/sign-up", signupRouter);
 app.use("/", homeRouter )
 
 const PORT = 3030;
