@@ -29,7 +29,7 @@ const signupPost = [
     (req, res, next) => {
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
-            res.render("/sign-up", {errors: errors});
+            res.render("signup/signup", { errors: errors, user: "" });
             return;
         }
         next();
@@ -43,7 +43,7 @@ const signupPost = [
 
 //render sign up form
 function signupRender(req, res) {
-    res.render("signup/signup")
+    res.render("signup/signup", { user: "" });
 }
 
 module.exports = {
