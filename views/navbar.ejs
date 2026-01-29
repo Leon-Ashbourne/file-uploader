@@ -1,8 +1,16 @@
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
-        <li><a href="/">username</a></li>
+        <%if(user) {%>
+            <li><a href="/"><% user.username %></a></li>
+        <%} else {%>
+            <li><a href="/">Unknown</a></li>
+        <%}%>
         <li><a href="/library">Library</a></li>
-        <li><a href="">Log In</a></li>
+        <%if(user) {%>
+            <li><a href="/log-out">Sign out</a></li>
+        <%}else {%>
+            <li><a href="/log-in">Sign in</a></li>
+        <%}%>
     </ul>
 </nav>
