@@ -1,7 +1,19 @@
 
-function authentication(req, res, next) {
-    //checking sessions
-    res.redirect('/log-in')
+function checkUSerSession(req, res, next) {
+    if(req.user) {
+        next();
+        return;
+    }
+    res.render('signup/signup', { user: "" });
 }
 
-module.exports = authentication;
+function redirectUserToLib(req, res) {
+    const { username } = req.user;
+    res.render("/", { username: username });
+}
+
+const authentication = [ checkUSerSession, redirectUserToLib ];
+
+module.exports = {
+    authentication
+};
