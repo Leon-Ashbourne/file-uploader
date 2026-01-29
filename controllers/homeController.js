@@ -4,12 +4,12 @@ function homeSessionCheck(req, res, next) {
         next();
         return;
     }
-    res.render("home/home.ejs", { user: "" });
+    res.render("home/home.ejs");
 }
 
 function homeSessionRender(req, res) {
-    const user = req.user;
-    res.render("home/home.ejs", { user: user });
+    res.locals.user = req.user;
+    res.render("home/home.ejs");
 }
 
 const homeRender = [ homeSessionCheck, homeSessionRender ];

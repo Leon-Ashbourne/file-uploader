@@ -4,12 +4,12 @@ function checkUSerSession(req, res, next) {
         next();
         return;
     }
-    res.render('signup/signup', { user: "" });
+    res.render('signup/signup');
 }
 
 function redirectUserToLib(req, res) {
-    const { username } = req.user;
-    res.render("/", { username: username });
+    res.locals.user = req.user;
+    res.render("library/library");
 }
 
 const authentication = [ checkUSerSession, redirectUserToLib ];

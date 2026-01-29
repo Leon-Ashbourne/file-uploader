@@ -1,11 +1,11 @@
 
 function loginRender(req, res) {
-    res.render("log-in/login", { user: "" });
+    res.render("log-in/login");
 }
 
 function loginPostReq(req, res) {
-    const user = req.user;
-    res.render("/", { user: user });
+    res.locals.user = req.user;
+    res.render("home/home");
 }
 
 module.exports = {
