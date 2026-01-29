@@ -9,6 +9,33 @@ async function addUser(password, username) {
     });
 }
 
+async function getUser(username, password) {
+    const user = await prisma.user.findUnique({
+        where: {
+            username: username,
+            password: password,
+        },
+    });
+
+    return user;
+}
+
+async function getUserById(id) {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+        include: {
+            id: true,
+            username: true,
+        }
+    });
+
+    return user;
+}
+
 module.exports = {
-    addUser
+    addUser,
+    getUser,
+    getUserById
 }

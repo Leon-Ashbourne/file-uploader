@@ -1,6 +1,8 @@
 const express = require("express");
 const session = require("express-session");
 const path  = require("node:path");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const { prisma } = require("./lib/prisma");
 
 require("dotenv/config")
 
@@ -9,6 +11,7 @@ const libRouter = require("./routes/libRouter")
 const authLibraryRouter = require("./routes/auth/authLibraryRouter");
 const loginRouter = require("./routes/loginRouter");
 const signupRouter = require("./routes/signupRouter")
+const passport = require("./passport/passport");
 
 const app = express();
 
@@ -22,7 +25,25 @@ app.use(express.static(assetsUrl));
 app.use(express.urlencoded({ extended: true }));
 
 //session storage
-
+app.use(
+    session({
+        cookie: {
+            maxAge: 7*24*60*60*1000,
+        },
+        resave: false,
+        saveUninitialized: false,
+        store: new PrismaSessionStore(
+            prisma,
+            {
+                checkPeriod: 2 * 60 * 1000,  
+                dbRecordIdIsSessionId: true,
+                dbRecordIdFunction: undefined,
+            }
+        ),
+        secret: process.env.SECRET
+    })
+)
+app.use(passport.session());
 
 //routes
 app.use("/library", authLibraryRouter, libRouter);

@@ -1,7 +1,8 @@
 const Router = require("express").Router;
-const signupRender = require("../controllers/signupController").signupRender
+const signupController = require("../controllers/signupController")
 
 const signupRouter = Router();
-signupRouter.get("/", signupRender)
+signupRouter.get("/", signupController.signupRender)
+signupRouter.post("/", signupController.signupPost)
 
 module.exports = signupRouter;
