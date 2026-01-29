@@ -10,10 +10,16 @@ async function addUser(password, username) {
 }
 
 async function getUser(username, password) {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findMany({
         where: {
-            username: username,
-            password: password,
+            AND: [
+                {
+                    username: username,
+                },
+                {
+                    password: password,
+                },
+            ],
         },
     });
 
@@ -25,7 +31,7 @@ async function getUserById(id) {
         where: {
             id: id,
         },
-        include: {
+        select: {
             id: true,
             username: true,
         }
