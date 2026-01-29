@@ -49,6 +49,14 @@ app.use(passport.session());
 app.use("/library", authLibraryRouter, libRouter);
 app.use("/log-in", loginRouter)
 app.use("/sign-up", signupRouter);
+app.get("/log-out", 
+    (req, res, next) => {
+        req.logout((err) => {
+            if(err) { return next(err); };
+            res.redirect("/");
+        })
+    }
+)
 app.use("/", homeRouter )
 
 const PORT = 3030;
