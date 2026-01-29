@@ -2,13 +2,15 @@ const LocalStrategy = require("passport-local").Strategy;
 const passport = require("passport");
 
 const getUser = require("../models/script").getUser;
+const getUserById = require("../models/script").getUserById;
 
 passport.use(
     new LocalStrategy(
-        async function(passport, username, done) {
+        async function(username, password, done) {
             try {
-                const result = await getUser(username, passport);
-                if(!result) done(null, result);
+                let result = await getUser(username, password);
+                result = result[0];
+                if(result) done(null, result);
                 else done(null, null)
                 return;
             }catch(err) {
@@ -29,7 +31,8 @@ passport.deserializeUser(
     async (id, done) => {
         try {
             const user = await getUserById(id);
-            if(!user) done(null, user);
+            if(user) done(null, user);
+            else done(null, null);
         }catch(err) {
             done(err)
         }
