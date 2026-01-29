@@ -1,13 +1,13 @@
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
-        <%if(user) {%>
-            <li><a href="/"><% user.username %></a></li>
+        <%if(locals.user) {%>
+            <li><a href="/"><%= locals.user.username %></a></li>
         <%} else {%>
             <li><a href="/">Unknown</a></li>
         <%}%>
         <li><a href="/library">Library</a></li>
-        <%if(user) {%>
+        <%if(locals.user) {%>
             <li><a href="/log-out">Sign out</a></li>
         <%}else {%>
             <li><a href="/log-in">Sign in</a></li>
