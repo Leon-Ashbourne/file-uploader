@@ -1,6 +1,6 @@
 
 function libRender(req, res) {
-    res.render("library/library.ejs");
+    res.render("library/library");
 }
 
 module.exports = {
