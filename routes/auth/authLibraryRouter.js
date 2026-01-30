@@ -1,7 +1,7 @@
 const Router = require("express").Router;
-const authentication = require("../../controllers/auth/authLibController");
+const checkUSerSession = require("../../controllers/auth/authLibController").checkUSerSession;
 
 const authLibraryRouter = Router();
-authLibraryRouter.use(authentication.authentication);
+authLibraryRouter.use(checkUSerSession);
 
 module.exports = authLibraryRouter;

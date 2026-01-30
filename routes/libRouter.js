@@ -6,6 +6,6 @@ const authLibraryRouter = require("./auth/authLibraryRouter");
 const libRouter = Router();
 
 libRouter.post("/files", filesController.filesPost);
-libRouter.get("/", authLibraryRouter, libController.libRender);
+libRouter.get("/", authLibraryRouter, libController.libGet);
 
 module.exports = libRouter;
