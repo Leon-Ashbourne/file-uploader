@@ -8,11 +8,6 @@ const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         const mediaPath = path.join(__dirname, 'uploads');
         const fieldname = file.fieldname;
-
-        // fs.mkdir(`${mediaPath}/${fieldname}`  (err) => {
-        //     if(err) cb(err)
-        //     else cb(null, `${mediaPath}/${fieldname}`);
-        // })
         cb(null, `${mediaPath}/${fieldname}`);
     },
     filename: function(req, file, cb) {
@@ -53,14 +48,12 @@ async function extractFiles(req, res, next) {
     const files = req.files;
     const userId = req.user.id;
 
-    // const asyncFilesPromises = [];
     for( const file of files ) {
     const { originalname, filename, size, path } = file;
 
     await addFileDetailsToDB(originalname, filename, size, path, userId);
     }
-    // Promise.all(asyncFilesPromises)
-    //     .then((values) => next());
+
     next();
 }
 
