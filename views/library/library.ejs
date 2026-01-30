@@ -5,10 +5,35 @@
     <body>
         <%- include("../navbar")%>
         <main>
-            <h1>My files</h1>
-            <form action="/file" method="post">
-                <input type="file" name="file" id="file-upload">
-            </form>
+            <h1>My Library</h1>
+            <section>
+                <div>
+                    <form action="/library/files" method="post" enctype="multipart/form-data">
+                        <section>
+                            <label for="files">choose files</label>
+                            <input
+                                type="file"
+                                name="files"
+                                id="files"
+                                accept=".jpg, .jpeg, .png, .svg, .pdf, .webp, .doc, .docx "
+                                multiple />
+                        </section>
+                        <section>
+                            <button id="submit">Submit</button>
+                        </section>
+                    </form>
+                </div>
+            </section>
+            <div>
+                <div>
+                    <h2>my files</h2>
+                </div>
+                <section>
+                    <div>
+                        <%- include("files")%>
+                    </div>
+                </section>
+            </div>
         </main>
     </body>
 </html>
