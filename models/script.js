@@ -53,13 +53,36 @@ async function addFileDetailsToDB(ogName, fName, size, path, id) {
         }
                     
     });
+}
 
-    console.log(value);
+async function getFilesFromDB(userId) {
+    const files = await prisma.files.findMany({
+        where: {
+            AND: [
+                {
+                    authorId: userId,
+                },
+                {
+                    foldersId: null
+                }
+            ]
+        },
+        select: {
+            createdAt: true,
+            updatedAt: true,
+            size: true,
+            OriginalName: true,
+            url: true
+        }
+    });
+
+    return files;
 }
 
 module.exports = {
     addUser,
     getUser,
     getUserById,
-    addFileDetailsToDB
+    addFileDetailsToDB,
+    getFilesFromDB
 }
