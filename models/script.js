@@ -68,21 +68,50 @@ async function getFilesFromDB(userId) {
             ]
         },
         select: {
-            createdAt: true,
             updatedAt: true,
             size: true,
             OriginalName: true,
-            url: true
+            fileName: true
         }
     });
 
     return files;
 }
 
+//create new folder
+async function createFolder(userId)  {
+    await prisma.folders.create({
+        data: {
+            author: {
+                connect: {id: userId},
+            },
+        },
+    });
+}
+//get folders
+async function getFoldersFromDB(userId) {
+    const folders = await prisma.folders.findMany({
+        where: {
+            authorId: userId,
+        },
+        select: {
+            createdAt: true,
+            name: true,
+            id: true,
+        },
+    });
+
+    return folders;
+}
+
+
+
 module.exports = {
     addUser,
     getUser,
     getUserById,
     addFileDetailsToDB,
-    getFilesFromDB
+    getFilesFromDB,
+    createFolder,
+    getFoldersFromDB,
 }
