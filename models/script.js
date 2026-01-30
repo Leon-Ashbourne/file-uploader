@@ -40,8 +40,26 @@ async function getUserById(id) {
     return user;
 }
 
+async function addFileDetailsToDB(ogName, fName, size, path, id) {
+    const value = await prisma.files.create({
+        data: {
+            url: path,
+            fileName: fName,
+            OriginalName: ogName,
+            size: size,
+            author: {
+                connect: { id: id }
+            }
+        }
+                    
+    });
+
+    console.log(value);
+}
+
 module.exports = {
     addUser,
     getUser,
-    getUserById
+    getUserById,
+    addFileDetailsToDB
 }
