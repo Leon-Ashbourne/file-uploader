@@ -2,9 +2,8 @@
     <%if(locals.files) {%>
         <%locals.files.forEach( file => {%>
             <ul>
-                <li> <a href= "#" ><%= file.OriginalName %></a></li>
+                <li> <a href= <%=file.url %> ><%= file.OriginalName %></a></li>
                 <li><%= file.size %></li>
-                <li><%= file.createdAt %></li>
                 <li><%= file.updatedAt %></li>
             </ul>
         <%})%>

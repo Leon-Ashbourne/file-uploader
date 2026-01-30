@@ -23,6 +23,16 @@
                         </section>
                     </form>
                 </div>
+                <div>
+                    <form action="/library/folder" method="post">
+                        <section>
+                            <input type="text" name="folder" id="folder" value="New folder" style="opacity: 0;">
+                        </section>
+                        <section>
+                            <button id="submit">New folder</button>
+                        </section>
+                    </form>
+                </div>
             </section>
             <div>
                 <div>
@@ -30,6 +40,7 @@
                 </div>
                 <section>
                     <div>
+                        <%- include("folders")%>
                         <%- include("files")%>
                     </div>
                 </section>

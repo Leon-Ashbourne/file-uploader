@@ -1,0 +1,10 @@
+<div>
+    <%if(locals.folders) {%>
+        <%locals.folders.forEach((folder) => {%>
+            <ul>
+                <li><a href=<%= folder.url%>><%=folder.name %></a></li>
+                <li><%= folder.createdAt %></li>
+            </ul>
+        <%})%>
+    <%}%>
+</div>
