@@ -71,7 +71,8 @@ async function getFilesFromDB(userId) {
             updatedAt: true,
             size: true,
             OriginalName: true,
-            fileName: true
+            fileName: true,
+            id: true,
         }
     });
 
@@ -104,6 +105,23 @@ async function getFoldersFromDB(userId) {
     return folders;
 }
 
+//get file details
+async function getFileDetailsById(fileId) {
+    const fileDetails = await prisma.files.findFirst({
+        where: {
+            id: fileId,
+        },
+        select: {
+            OriginalName: true,
+            size: true,
+            createdAt: true,
+            updatedAt: true,
+        }
+    });
+
+    return fileDetails;
+}
+
 
 
 module.exports = {
@@ -114,4 +132,5 @@ module.exports = {
     getFilesFromDB,
     createFolder,
     getFoldersFromDB,
+    getFileDetailsById
 }
