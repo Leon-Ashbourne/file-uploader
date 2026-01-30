@@ -8,6 +8,7 @@ const folderController = require("../controllers/folderRouter");
 const libRouter = Router();
 
 libRouter.post("/files", filesController.filesPost);
+libRouter.get("/files-{*splat}/:fileId", filesController.fileGet);
 libRouter.post("/folder", folderController.folderGet);
 libRouter.get("/", authLibraryRouter, libController.libGet);
 

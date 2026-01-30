@@ -1,0 +1,26 @@
+<html>
+    <head>
+        <title><%= locals.details.OriginalName %></title>
+    </head>
+    <body>
+        <%- include("../../navbar")%>
+        <main>
+            <div><h1>File details: </h1></div>
+            <div>
+                <h2><a href="/library">Back to Library</a></h2>
+            </div>
+            <div>
+                <section>
+                    <div>
+                        <ul>
+                            <li><%= locals.details.OriginalName %></li>
+                            <li><%= locals.details.size %></li>
+                            <li><%= locals.details.createdAt %></li>
+                            <li><%= locals.details.updatedAt %></li>
+                        </ul>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </body>
+</html>

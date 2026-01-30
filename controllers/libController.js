@@ -1,5 +1,4 @@
-const getFilesFromDB = require("../models/script").getFilesFromDB;
-const getFoldersFromDB = require("../models/script").getFoldersFromDB;
+const { getFilesFromDB, getFoldersFromDB } = require("../models/script");
 
 //files list
 async function requestAllFiles(req, res, next) {
@@ -22,7 +21,7 @@ async function updateFileDetails(req, res, next) {
 
     const files = res.locals.files;
     res.locals.files = files.map(file => {
-        file.url = path + "/files/" + file.OriginalName;
+        file.url = path + "/files-d0e1sd15af6e6rt" + file.OriginalName + "/" + file.id;
         return file;
     });
 

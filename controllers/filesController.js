@@ -1,5 +1,5 @@
 const multer = require("multer");
-const { addFileDetailsToDB } = require("../models/script");
+const { addFileDetailsToDB, getFileDetailsById } = require("../models/script");
 const fs = require("fs");
 const path = require("node:path")
 
@@ -61,6 +61,26 @@ async function redirectToLib(req, res) {
     res.redirect("/library");
 }
 
+//file details
+async function requestFileDetails(req, res, next) {
+    const { fileId } = req.params;
+    const id = parseInt(fileId);
+
+    if(id) {
+        const details = await getFileDetailsById((id));
+        res.locals.details = details;
+        next();
+    }
+    else res.render("error");
+}
+
+async function sendFileDetails(req, res) {
+    res.locals.user = req.user;
+    res.render("library/view/file");
+}
+
+const fileGet = [ requestFileDetails, sendFileDetails ]
+
 const filesPost = [
     upload.array("files"),
     (req, res, next) => {
@@ -73,5 +93,6 @@ const filesPost = [
 
 
 module.exports = {
-    filesPost
+    filesPost,
+    fileGet
 }
