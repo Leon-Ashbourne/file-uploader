@@ -14,39 +14,35 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  username String
-  password String   @db.VarChar(15)
-  lib      Library?
-}
-
-model Library {
   id       Int       @id @default(autoincrement())
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId Int       @unique
-  folders  Folders[]
+  username String
+  password String    @db.VarChar(15)
   files    Files[]
+  folders  Folders[]
 }
 
 model Folders {
   id        Int      @id @default(autoincrement())
   name      String   @db.VarChar(25)
-  library   Library  @relation(fields: [libId], references: [id])
-  libId     Int
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
   files     Files[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Files {
-  id        Int      @id @default(autoincrement())
-  url       String
-  library   Library  @relation(fields: [libId], references: [id])
-  libId     Int
-  folders   Folders? @relation(fields: [foldersId], references: [id])
-  foldersId Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  url          String
+  fileName     String   @unique
+  OriginalName String   
+  size         Int
+  folders      Folders? @relation(fields: [foldersId], references: [id])
+  author       User     @relation(fields: [authorId], references: [id])
+  foldersId    Int?
+  authorId     Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Session {
