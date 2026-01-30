@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
         cb(null, `${mediaPath}/${fieldname}`);
     },
     filename: function(req, file, cb) {
-        const filename = file.fieldname+ "-" +file.originalname;
+        const filename = file.fieldname + "-" + Math.random()*1e12 + "-" + file.originalname;
         cb(null, filename);
     }
 })
