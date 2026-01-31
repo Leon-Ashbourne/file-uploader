@@ -4,6 +4,7 @@ const libController = require("../controllers/libController");
 const filesController = require("../controllers/filesController");
 const authLibraryRouter = require("./auth/authLibraryRouter");
 const folderController = require("../controllers/folderController");
+const error = require("../controllers/errorController");
 
 const libRouter = Router();
 
@@ -16,5 +17,7 @@ libRouter.post("/folder-d0f4e1548ad9e4f162300/:folderId", filesController.filesF
 
 libRouter.post("/folder", folderController.folderPost);
 libRouter.get("/", authLibraryRouter, libController.libGet);
+
+libRouter.use("/{*splat}", error);
 
 module.exports = libRouter;

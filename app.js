@@ -11,6 +11,7 @@ const libRouter = require("./routes/libRouter")
 const loginRouter = require("./routes/loginRouter");
 const signupRouter = require("./routes/signupRouter")
 const passport = require("./passport/passport");
+const error = require("./controllers/errorController");
 
 const app = express();
 
@@ -57,6 +58,14 @@ app.get("/log-out",
     }
 )
 app.use("/", homeRouter )
+app.use("/{*splat}", error);
+
+//errors
+app.use("/", 
+    (req, res, next, err) => {
+        res.render("error") //show error page for now
+    }
+)
 
 const PORT = 3030;
 app.listen(PORT, (error) => {
