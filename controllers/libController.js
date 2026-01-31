@@ -16,7 +16,7 @@ async function requestAllFiles(req, res, next) {
     }
 }
 
-async function updateFileDetails(req, res, next) {
+async function updateFileWithHref(req, res, next) {
     const path = req.originalUrl;
 
     const files = res.locals.files;
@@ -27,7 +27,7 @@ async function updateFileDetails(req, res, next) {
 
     const folders = res.locals.folders;
     res.locals.folders = folders.map(folder => {
-        folder.url = path + "/d0f4e1548ad9e4f162300/" + folder.id;
+        folder.url = path + "/folder-d0f4e1548ad9e4f162300/" + folder.id;
         return folder;
     })
     res.locals.user = req.user;
@@ -38,7 +38,7 @@ function authSuccess(req, res) {
     res.render("library/library");
 };
 
-const libGet = [ requestAllFiles, updateFileDetails, authSuccess ]
+const libGet = [ requestAllFiles, updateFileWithHref, authSuccess ]
 
 module.exports = {
     libGet,
