@@ -1,5 +1,5 @@
 const multer = require("multer");
-const { addFileDetailsToDB, getFileDetailsById } = require("../models/script");
+const { addFileDetailsToDB, getFileDetailsById, createFilesFromFolder } = require("../models/script");
 const fs = require("fs");
 const path = require("node:path")
 
@@ -91,8 +91,47 @@ const filesPost = [
     redirectToLib
 ]
 
+//post files under the folder
+async function checkFolderUrl(req, res, next) {
+    const { folderId } = req.params;
+    const id = parseInt(folderId);
+    if(id) {
+        res.locals.folderId = id;
+        next();
+    }
+    else res.render("error");
+};
+
+async function extractFolderFiles(req, res, next) {
+    const files = req.files;
+    const userId = req.user.id;
+    const folderId = res.locals.folderId;
+
+    for( const file of files ) {
+    const { originalname, filename, size, path } = file;
+
+    await createFilesFromFolder(folderId, originalname, filename, size, path, userId);
+    }
+
+    next();
+}
+
+async function redirectToFolderFiles(req, res) {
+    res.locals.user = req.user;
+    const folderId = res.locals.folderId;
+    res.redirect(`/library/folder-d0f4e1548ad9e4f162300/${folderId}`);
+}
+
+const filesFromFolderPost = [ 
+    upload.array("folderfiles"),
+    checkFolderUrl,
+    extractFolderFiles,
+    redirectToFolderFiles
+]
+
 
 module.exports = {
     filesPost,
-    fileGet
+    fileGet,
+    filesFromFolderPost
 }
