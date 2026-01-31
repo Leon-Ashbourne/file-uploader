@@ -9,18 +9,15 @@ async function addUser(password, username) {
     });
 }
 
-async function getUser(username, password) {
+async function getUserByUsername(username) {
     const user = await prisma.user.findMany({
         where: {
-            AND: [
-                {
-                    username: username,
-                },
-                {
-                    password: password,
-                },
-            ],
+            username: username
         },
+        select: {
+            id: true,
+            password: true
+        }
     });
 
     return user;
@@ -40,10 +37,9 @@ async function getUserById(id) {
     return user;
 }
 
-async function addFileDetailsToDB(ogName, fName, size, path, id) {
+async function addFileDetailsToDB(ogName, fName, size, id) {
     const value = await prisma.files.create({
         data: {
-            url: path,
             fileName: fName,
             OriginalName: ogName,
             size: size,
@@ -157,7 +153,7 @@ async function createFilesFromFolder(folderId, ogName, fName, size, path, userId
 
 module.exports = {
     addUser,
-    getUser,
+    getUserByUsername,
     getUserById,
     addFileDetailsToDB,
     getFilesFromDB,
