@@ -1,19 +1,10 @@
 const multer = require("multer");
-const { addFileDetailsToDB, getFileDetailsById, createFilesFromFolder } = require("../models/script");
-const path = require("node:path")
+const { decode } = require("base64-arraybuffer");
 
+const { addFileDetailsToDB, getFileDetailsById, createFilesFromFolder } = require("../models/script");
+const { uploadFile } = require("../models/supabase");
 //configure multer 
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        const mediaPath = path.join(__dirname, 'uploads');
-        const fieldname = file.fieldname;
-        cb(null, `${mediaPath}/${fieldname}`);
-    },
-    filename: function(req, file, cb) {
-        const filename = file.fieldname + "-" + Math.random()*1e12 + "-" + file.originalname;
-        cb(null, filename);
-    }
-})
+const storage = multer.memoryStorage();
 
 const validFileTypes = [ //valid file types
     "image/jpg",
@@ -42,17 +33,39 @@ const upload = multer({
     fileFilter: validateFiles 
 });
 
+function generateFileName(fieldname, originalname) {
+    const filename = fieldname + "-" + Math.random()*1e12 + "-" + originalname; 
+    return filename;
+}
 
 async function extractFiles(req, res, next) {
     const files = req.files;
     const userId = req.user.id;
 
-    for( const file of files ) {
-    const { originalname, filename, size, path } = file;
+    for( const file of files ) {    
+    const { originalname, size, fieldname } = file;
+    const filename = generateFileName(fieldname, originalname);
 
-    await addFileDetailsToDB(originalname, filename, size, path, userId);
+    await addFileDetailsToDB(originalname, filename, size, userId);
     }
 
+    next();
+}
+
+async function sendFileToSupabase(req, res, next) {
+    const files = req.files;
+    
+    for(const file of files) {
+
+        const filename = generateFileName(file.fieldname, file.originalname);
+        const filePath = `files/${filename}`;
+        const contentType = file.mimetype;
+
+        const fileData = decode(file.buffer.toString("base64"));
+
+        await uploadFile(filePath, fileData, contentType);
+
+    }
     next();
 }
 
@@ -67,6 +80,7 @@ const filesPost = [
         next();
     },
     extractFiles,
+    sendFileToSupabase,
     redirectToLib
 ]
 
