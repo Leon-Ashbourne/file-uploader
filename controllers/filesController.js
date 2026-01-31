@@ -1,6 +1,5 @@
 const multer = require("multer");
 const { addFileDetailsToDB, getFileDetailsById, createFilesFromFolder } = require("../models/script");
-const fs = require("fs");
 const path = require("node:path")
 
 //configure multer 
