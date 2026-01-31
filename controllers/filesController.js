@@ -86,7 +86,7 @@ async function requestFileDetails(req, res, next) {
 
 async function sendFileDetails(req, res) {
     res.locals.user = req.user;
-    res.render("library/view/file");
+    res.render("library/view/file", { href: "/library" });
 }
 
 const fileGet = [ requestFileDetails, sendFileDetails ]
@@ -129,9 +129,22 @@ const filesFromFolderPost = [
     redirectToFolderFiles
 ]
 
+//file details from folder
+async function sendFolderFileDetails(req, res) {
+    res.locals.user = req.user;
+    const { folderId } = req.params;
+    const href = `/library/folder-d0f4e1548ad9e4f162300/${folderId}`
+
+    res.render("library/view/file", { href })
+}
+
+
+const folderFileDetailsGet = [ requestFileDetails, sendFolderFileDetails ]
+
 
 module.exports = {
     filesPost,
     fileGet,
-    filesFromFolderPost
+    filesFromFolderPost,
+    folderFileDetailsGet
 }
