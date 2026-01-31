@@ -122,6 +122,23 @@ async function getFileDetailsById(fileId) {
     return fileDetails;
 }
 
+//get files from folder
+async function getFilesFromFolderById(folderId) {
+    const files = await prisma.files.findMany({
+        where: {
+            foldersId: folderId,
+        },
+        select: {
+            createdAt: true,
+            size: true,
+            OriginalName: true,
+            fileName: true,
+            id: true,
+        },
+    });
+     
+    return files;
+}
 
 
 module.exports = {
@@ -132,5 +149,6 @@ module.exports = {
     getFilesFromDB,
     createFolder,
     getFoldersFromDB,
-    getFileDetailsById
+    getFileDetailsById,
+    getFilesFromFolderById
 }
