@@ -1,4 +1,5 @@
 const { validationResult, body, matchedData } = require("express-validator");
+const bcrypt = require("bcryptjs");
 
 const { addUser } = require("../models/script");
 
@@ -24,19 +25,30 @@ const validate = [
 ]
 
 //add user details to db
+async function encryptPassword(req, res, next) {
+    const { password } = matchedData(req);
+
+    const salt = await bcrypt.genSalt(12);
+    const hash = await bcrypt.hash(password, salt);
+
+    res.locals.hash = hash;
+    next();
+} 
+
 const signupPost = [
     validate,
     (req, res, next) => {
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
-            res.render("signup/signup", { errors: errors, user: "" });
+            res.render("signup/signup", { errors: errors });
             return;
         }
         next();
     },
-    (req, res, next) => {
-        const { password, username } = matchedData(req);
-        addUser(password, username);
+    encryptPassword,
+    async (req, res, next) => {
+        const { username } = matchedData(req);
+        await addUser(res.locals.hash , username);
         res.redirect("/");
     }
 ]

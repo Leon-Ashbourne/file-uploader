@@ -1,16 +1,25 @@
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require("passport");
+const bcrypt = require("bcryptjs");
 
-const getUser = require("../models/script").getUser;
-const getUserById = require("../models/script").getUserById;
+const { getUserByUsername, getUserById } = require("../models/script") ;
 
 passport.use(
     new LocalStrategy(
         async function(username, password, done) {
             try {
-                let result = await getUser(username, password);
+
+                let result = await getUserByUsername(username);
                 result = result[0];
-                if(result) done(null, result);
+                const isValid = await bcrypt.compare(password, result.password);
+
+                if(isValid) {
+                    const id = result.id;
+                    done(null, {
+                        id,
+                        username
+                    })
+                }
                 else done(null, null)
                 return;
             }catch(err) {
