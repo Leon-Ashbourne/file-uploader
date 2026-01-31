@@ -15,8 +15,8 @@ datasource db {
 
 model User {
   id       Int       @id @default(autoincrement())
-  username String
-  password String    @db.VarChar(15)
+  username String    @unique
+  password String    
   files    Files[]
   folders  Folders[]
 }
@@ -33,7 +33,6 @@ model Folders {
 
 model Files {
   id           Int      @id @default(autoincrement())
-  url          String
   fileName     String   @unique
   OriginalName String   
   size         Int
