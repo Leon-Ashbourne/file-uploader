@@ -9,7 +9,10 @@ const libRouter = Router();
 
 libRouter.post("/files", filesController.filesPost);
 libRouter.get("/files-{*splat}/:fileId", filesController.fileGet);
-libRouter.get("/folder-{*splat}/:folderId", folderController.folderFilesGet)
+
+libRouter.get("/folder-{*splat}/:folderId", folderController.folderFilesGet);
+libRouter.post("/folder-d0f4e1548ad9e4f162300/:folderId", filesController.filesFromFolderPost);
+
 libRouter.post("/folder", folderController.folderPost);
 libRouter.get("/", authLibraryRouter, libController.libGet);
 
