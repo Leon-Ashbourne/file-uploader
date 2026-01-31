@@ -1,5 +1,5 @@
 <div>
-    <%if(locals.files) {%>
+    <%if(locals.files && locals.files.length>0) {%>
         <%locals.files.forEach( file => {%>
             <ul>
                 <li> <a href= <%=file.url %> ><%= file.OriginalName %></a></li>
