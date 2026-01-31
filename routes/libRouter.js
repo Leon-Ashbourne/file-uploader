@@ -10,6 +10,7 @@ const libRouter = Router();
 libRouter.post("/files", filesController.filesPost);
 libRouter.get("/files-{*splat}/:fileId", filesController.fileGet);
 
+libRouter.get("/folder-{*splat}/:folderId/fe40lk77e1835qt00e/:fileId", filesController.folderFileDetailsGet)
 libRouter.get("/folder-{*splat}/:folderId", folderController.folderFilesGet);
 libRouter.post("/folder-d0f4e1548ad9e4f162300/:folderId", filesController.filesFromFolderPost);
 
