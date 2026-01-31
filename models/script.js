@@ -129,7 +129,7 @@ async function getFilesFromFolderById(folderId) {
             foldersId: folderId,
         },
         select: {
-            createdAt: true,
+            updatedAt: true,
             size: true,
             OriginalName: true,
             fileName: true,
@@ -138,6 +138,20 @@ async function getFilesFromFolderById(folderId) {
     });
      
     return files;
+}
+
+//create files from folder
+async function createFilesFromFolder(folderId, ogName, fName, size, path, userId){
+    await prisma.files.create({
+        data: {
+            foldersId: folderId,
+            OriginalName: ogName,
+            url: path,
+            authorId: userId,
+            size: size,
+            fileName: fName,
+        },
+    });
 }
 
 
@@ -150,5 +164,6 @@ module.exports = {
     createFolder,
     getFoldersFromDB,
     getFileDetailsById,
-    getFilesFromFolderById
+    getFilesFromFolderById,
+    createFilesFromFolder
 }
