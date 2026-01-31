@@ -21,6 +21,7 @@ async function requestFilesFromFolder(req, res, next) {
     const id = parseInt(folderId);
     if(id) {
         const files = await getFilesFromFolderById(id);
+        res.locals.folderId = id;
         res.locals.files = files;
         next();
     }
@@ -28,9 +29,12 @@ async function requestFilesFromFolder(req, res, next) {
 }
 
 async function updateFileWithHref(req, res, next) {
+    res.locals.action = `/library/folder-d0f4e1548ad9e4f162300/${res.locals.folderId}`;
+
     const files = res.locals.files;
+    const baseUrl = req.originalUrl
     res.locals.files = files.map(file => {
-        file.url = path + "/fe40lk77e1835qt00e/" + file.id;
+        file.url = baseUrl + "/fe40lk77e1835qt00e/" + file.id;
         return file;
     })
     next();
