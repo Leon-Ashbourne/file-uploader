@@ -61,6 +61,16 @@ async function redirectToLib(req, res) {
     res.redirect("/library");
 }
 
+const filesPost = [
+    upload.array("files"),
+    (req, res, next) => {
+        console.log(req.files);
+        next();
+    },
+    extractFiles,
+    redirectToLib
+]
+
 //file details
 async function requestFileDetails(req, res, next) {
     const { fileId } = req.params;
@@ -80,16 +90,6 @@ async function sendFileDetails(req, res) {
 }
 
 const fileGet = [ requestFileDetails, sendFileDetails ]
-
-const filesPost = [
-    upload.array("files"),
-    (req, res, next) => {
-        console.log(req.files);
-        next();
-    },
-    extractFiles,
-    redirectToLib
-]
 
 //post files under the folder
 async function checkFolderUrl(req, res, next) {
