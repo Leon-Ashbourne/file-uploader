@@ -156,6 +156,29 @@ async function createFilesFromFolder(folderId, ogName, fName, size, userId, supa
     });
 }
 
+//update filename 
+async function updateFileName(fileId, filename) {
+    await prisma.files.update({
+        where: {
+            id: fileId,
+        },
+        data: {
+            OriginalName: filename,
+        },
+    });
+}
+
+//update foldername 
+async function updateFolderName(folderId, foldername) {
+    await prisma.folders.update({
+        where: {
+            id: folderId,
+        },
+        data: {
+            name: foldername,
+        },
+    });
+}
 
 module.exports = {
     addUser,
@@ -167,5 +190,7 @@ module.exports = {
     getFoldersFromDB,
     getFileDetailsById,
     getFilesFromFolderById,
-    createFilesFromFolder
+    createFilesFromFolder,
+    updateFileName,
+    updateFolderName
 }
