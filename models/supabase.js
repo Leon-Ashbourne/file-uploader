@@ -13,6 +13,17 @@ async function uploadFile(path, file, contentType) {
     if(error) return error;
 }
 
+async function downloadFile(filePath) {
+    const { data } = supabase.storage
+    .from("files")
+    .getPublicUrl(filePath, {
+        download: true,
+    });
+    
+    return data.publicUrl;
+}
+
 module.exports = {
-    uploadFile
+    uploadFile,
+    downloadFile
 }
