@@ -11,6 +11,10 @@ passport.use(
 
                 let result = await getUserByUsername(username);
                 result = result[0];
+                if(!result) {
+                    done(null, null);
+                    return;
+                }
                 const isValid = await bcrypt.compare(password, result.password);
 
                 if(isValid) {
