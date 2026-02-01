@@ -142,7 +142,9 @@ async function getFilesFromFolderById(folderId) {
 async function createFilesFromFolder(folderId, ogName, fName, size, userId, supabasePath){
     await prisma.files.create({
         data: {
-            foldersId: folderId,
+            folders: {
+                connect: {id : folderId},
+            },
             OriginalName: ogName,
             author: {
                 connect: { id: userId},
