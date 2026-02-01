@@ -38,34 +38,42 @@ function generateFileName(fieldname, originalname) {
     return filename;
 }
 
-async function extractFiles(req, res, next) {
-    const files = req.files;
-    const userId = req.user.id;
+async function sendFileToSupabase(req, res, next) {
+    const file = req.file;
 
-    for( const file of files ) {    
-    const { originalname, size, fieldname } = file;
-    const filename = generateFileName(fieldname, originalname);
+    const filename = generateFileName(file.fieldname, file.originalname);
+    const filePath = `files/${filename}`;
+    const contentType = file.mimetype;
 
-    await addFileDetailsToDB(originalname, filename, size, userId);
-    }
+    const fileData = decode(file.buffer.toString("base64"));
+
+    const error = await uploadFile(filePath, fileData, contentType);
+
+    if(error) res.locals.supabaseError = error;
 
     next();
 }
 
-async function sendFileToSupabase(req, res, next) {
-    const files = req.files;
-    
-    for(const file of files) {
+async function handleSupabaseErrors(req, res, next) {
+    const supabaseError = res.locals.supabaseError;
 
-        const filename = generateFileName(file.fieldname, file.originalname);
-        const filePath = `files/${filename}`;
-        const contentType = file.mimetype;
-
-        const fileData = decode(file.buffer.toString("base64"));
-
-        await uploadFile(filePath, fileData, contentType);
-
+    if(supabaseError) { 
+        const message = "Something went wrong. we couldn't upload your file, please try again.";
+        alert(message);
+        res.redirect("/library");
     }
+    else next()
+}
+
+async function extractFiles(req, res, next) {
+    const file = req.file;
+    const userId = req.user.id;
+
+    const { originalname, size, fieldname } = file;
+    const filename = generateFileName(fieldname, originalname);
+
+    await addFileDetailsToDB(originalname, filename, size, userId);
+
     next();
 }
 
@@ -74,13 +82,10 @@ async function redirectToLib(req, res) {
 }
 
 const filesPost = [
-    upload.array("files"),
-    (req, res, next) => {
-        console.log(req.files);
-        next();
-    },
-    extractFiles,
+    upload.single("files"),
     sendFileToSupabase,
+    handleSupabaseErrors,
+    extractFiles,
     redirectToLib
 ]
 
