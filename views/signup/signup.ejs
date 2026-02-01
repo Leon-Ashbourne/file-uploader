@@ -28,6 +28,16 @@
                     </div>
                 </form>
             </div>
+
+            <div>
+                <%if(locals.errors) {%>
+                    <ul>
+                        <%locals.forEach(error => {%>
+                            <li><%= error %></li>
+                        <%})%>
+                    </ul>
+                <%}%>
+            </div>
         </main>
     </body>
 </html>

@@ -1,7 +1,7 @@
 const { validationResult, body, matchedData } = require("express-validator");
 const bcrypt = require("bcryptjs");
 
-const { addUser } = require("../models/script");
+const { addUser, uniqueUsername } = require("../models/script");
 
 //validate and sanitize user details
 const validate = [
@@ -25,6 +25,16 @@ const validate = [
 ]
 
 //add user details to db
+async function checkUsername(req, res, next) {
+    const { username } = matchedData(req);
+    const result = await uniqueUsername(username);
+
+    if(result) {
+        res.render("signup/signup", {errors: ["username already exists. try another one"]});
+    }
+    else next();
+}
+
 async function encryptPassword(req, res, next) {
     const { password } = matchedData(req);
 
@@ -45,6 +55,7 @@ const signupPost = [
         }
         next();
     },
+    checkUsername,
     encryptPassword,
     async (req, res, next) => {
         const { username } = matchedData(req);

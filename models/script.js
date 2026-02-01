@@ -180,6 +180,17 @@ async function updateFolderName(folderId, foldername) {
     });
 }
 
+//unique username
+async function uniqueUsername(username) {
+    const result = await prisma.user.findFirst({
+        where: {
+            username: username
+        },
+    });
+
+    return result;
+}
+
 module.exports = {
     addUser,
     getUserByUsername,
@@ -192,5 +203,6 @@ module.exports = {
     getFilesFromFolderById,
     createFilesFromFolder,
     updateFileName,
-    updateFolderName
+    updateFolderName,
+    uniqueUsername
 }

@@ -61,11 +61,11 @@ app.use("/", homeRouter )
 app.use("/{*splat}", error);
 
 //errors
-app.use("/", 
-    (req, res, next, err) => {
-        res.render("error") //show error page for now
-    }
-)
+// app.use("/", 
+//     (req, res, next, err) => {
+//         res.render("error") //show error page for now
+//     }
+// )
 
 const PORT = 3030;
 app.listen(PORT, (error) => {
