@@ -14,11 +14,16 @@
                     <div>
                         <ul>
                             <li><%= locals.details.OriginalName %></li>
-                            <li><%= locals.details.size %></li>
+                            <li><%= locals.details.size %> Bytes</li>
                             <li><%= locals.details.createdAt %></li>
                             <li><%= locals.details.updatedAt %></li>
                         </ul>
                     </div>
+                </section>
+                <section>
+                    <button>
+                        <a href=<%= locals.donwloadLink %>>Download</a>
+                    </button>
                 </section>
             </div>
         </main>
