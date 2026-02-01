@@ -1,8 +1,8 @@
 const multer = require("multer");
 const { decode } = require("base64-arraybuffer");
 
-const { addFileDetailsToDB, getFileDetailsById, createFilesFromFolder } = require("../models/script");
-const { uploadFile } = require("../models/supabase");
+const { addFileDetailsToDB, getFileDetailsById, createFilesFromFolder, getFilepathById } = require("../models/script");
+const { uploadFile, downloadFile } = require("../models/supabase");
 //configure multer 
 const storage = multer.memoryStorage();
 
@@ -44,6 +44,7 @@ async function sendFileToSupabase(req, res, next) {
     const filename = generateFileName(file.fieldname, file.originalname);
     const filePath = `files/${filename}`;
     const contentType = file.mimetype;
+    res.locals.filePath = filePath;
 
     const fileData = decode(file.buffer.toString("base64"));
 
@@ -76,8 +77,9 @@ async function extractFiles(req, res, next) {
 
     const { originalname, size, fieldname } = file;
     const filename = generateFileName(fieldname, originalname);
+    const supabasePath = res.locals.filePath;
 
-    await addFileDetailsToDB(originalname, filename, size, userId);
+    await addFileDetailsToDB(originalname, filename, size, userId, supabasePath);
 
     next();
 }
@@ -100,11 +102,19 @@ async function requestFileDetails(req, res, next) {
     const id = parseInt(fileId);
 
     if(id) {
-        const details = await getFileDetailsById((id));
+        const details = await getFileDetailsById(id);
         res.locals.details = details;
         next();
     }
     else res.render("error");
+}
+
+async function donwloadLinkFileSupabase(req, res, next) {
+    const filePath = res.locals.details.supabasePath;
+    const link = await downloadFile(filePath);
+
+    res.locals.donwloadLink = link;
+    next();
 }
 
 async function sendFileDetails(req, res) {
@@ -112,7 +122,7 @@ async function sendFileDetails(req, res) {
     res.render("library/view/file", { href: "/library" });
 }
 
-const fileGet = [ requestFileDetails, sendFileDetails ]
+const fileGet = [ requestFileDetails, donwloadLinkFileSupabase, sendFileDetails ]
 
 //post files under the folder
 async function checkFolderUrl(req, res, next) {
@@ -132,6 +142,7 @@ async function sendFolderFilesToSupabase(req, res, next) {
     const contentType = file.mimetype;
     const filename = generateFileName(file.fieldname, file.originalname);
     const filePath = `folderfiles/${filename}`;
+    res.locals.filePath = filePath;
     const fileData = decode(file.buffer.toString("base64"));
 
     const error = await uploadFile(filePath, fileData, contentType);
@@ -152,8 +163,9 @@ async function extractFolderFiles(req, res, next) {
 
     const { fieldname, originalname, size } = file;
     const filename = generateFileName(fieldname, originalname);
+    const supabasePath = res.locals.filePath;
 
-    await createFilesFromFolder(folderId, originalname, filename, size, userId);
+    await createFilesFromFolder(folderId, originalname, filename, size, userId, supabasePath);
 
     next();
 }
@@ -184,7 +196,7 @@ async function sendFolderFileDetails(req, res) {
 }
 
 
-const folderFileDetailsGet = [ requestFileDetails, sendFolderFileDetails ]
+const folderFileDetailsGet = [ requestFileDetails, donwloadLinkFileSupabase, sendFolderFileDetails ]
 
 
 module.exports = {
