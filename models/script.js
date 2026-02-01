@@ -37,7 +37,7 @@ async function getUserById(id) {
     return user;
 }
 
-async function addFileDetailsToDB(ogName, fName, size, id) {
+async function addFileDetailsToDB(ogName, fName, size, id, supabasePath) {
     const value = await prisma.files.create({
         data: {
             fileName: fName,
@@ -45,8 +45,9 @@ async function addFileDetailsToDB(ogName, fName, size, id) {
             size: size,
             author: {
                 connect: { id: id }
-            }
-        }
+            },
+            supabasePath: supabasePath,
+        },
                     
     });
 }
@@ -138,14 +139,17 @@ async function getFilesFromFolderById(folderId) {
 }
 
 //create files from folder
-async function createFilesFromFolder(folderId, ogName, fName, size, userId){
+async function createFilesFromFolder(folderId, ogName, fName, size, userId, supabasePath){
     await prisma.files.create({
         data: {
             foldersId: folderId,
             OriginalName: ogName,
-            authorId: userId,
+            author: {
+                connect: { id: userId},
+            },
             size: size,
             fileName: fName,
+            supabasePath: supabasePath
         },
     });
 }
