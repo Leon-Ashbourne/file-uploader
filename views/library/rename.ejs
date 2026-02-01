@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>rename</title>
+    </head>
+    <body>
+        <main>
+            <div>
+                <h1>Enter the name: </h1>
+                <form action=<%= locals.renameAction%> method="post">
+                    <div>
+                        <input type="text" id="name" name="name">
+                    </div>
+                    <div>
+                        <button id="submit">submit</button>
+                        <button class="button"><a href="/library">cancel</a></button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </body>
+</html>

@@ -1,11 +1,21 @@
 <div>
     <%if(locals.files && locals.files.length>0) {%>
         <%locals.files.forEach( file => {%>
-            <ul>
-                <li> <a href= <%=file.url %> ><%= file.OriginalName %></a></li>
-                <li><%= file.size %>Bytes</li>
-                <li><%= file.updatedAt %></li>
-            </ul>
+            <div>
+                <section>
+                    <ul>
+                        <li> <a href= <%=file.url %> ><%= file.OriginalName %></a></li>
+                        <li><%= file.size %>Bytes</li>
+                        <li><%= file.updatedAt %></li>
+                        <li>
+                            <form action=<%= file.editFileLink %> method="get">
+                                <div>
+                                    <input type="submit" value="edit">
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </section>
         <%})%>
     <%} else {%>
         <p>No files are found...</p>

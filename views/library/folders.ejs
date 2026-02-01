@@ -4,6 +4,13 @@
             <ul>
                 <li><a href=<%= folder.url%>><%=folder.name %></a></li>
                 <li><%= folder.createdAt %></li>
+                <li>
+                    <form action=<%= folder.editFolderLink %> method="get">
+                        <div>
+                            <input type="submit" value="edit">
+                        </div>
+                    </form>
+                </li>
             </ul>
         <%})%>
     <%}%>
