@@ -137,12 +137,11 @@ async function getFilesFromFolderById(folderId) {
 }
 
 //create files from folder
-async function createFilesFromFolder(folderId, ogName, fName, size, path, userId){
+async function createFilesFromFolder(folderId, ogName, fName, size, userId){
     await prisma.files.create({
         data: {
             foldersId: folderId,
             OriginalName: ogName,
-            url: path,
             authorId: userId,
             size: size,
             fileName: fName,
