@@ -49,7 +49,10 @@ async function sendFileToSupabase(req, res, next) {
 
     const error = await uploadFile(filePath, fileData, contentType);
 
-    if(error) res.locals.supabaseError = error;
+    if(error) {
+        res.locals.supabaseError = error;
+        res.locals.redirectFileFailure = "/library";
+    }
 
     next();
 }
@@ -59,8 +62,10 @@ async function handleSupabaseErrors(req, res, next) {
 
     if(supabaseError) { 
         const message = "Something went wrong. we couldn't upload your file, please try again.";
-        alert(message);
-        res.redirect("/library");
+        const redirectFileFailure = res.locals.redirectFileFailure;
+        // alert error message;
+        console.error(supabaseError);
+        res.redirect(redirectFileFailure);
     }
     else next()
 }
@@ -120,19 +125,39 @@ async function checkFolderUrl(req, res, next) {
     else res.render("error");
 };
 
+
+async function sendFolderFilesToSupabase(req, res, next) {
+    const file = req.file;
+
+    const contentType = file.mimetype;
+    const filename = generateFileName(file.fieldname, file.originalname);
+    const filePath = `folderfiles/${filename}`;
+    const fileData = decode(file.buffer.toString("base64"));
+
+    const error = await uploadFile(filePath, fileData, contentType);
+
+    if(error) {
+        res.locals.supabaseError = error;
+        const folderId = res.locals.folderId;
+        res.locals.redirectFileFailure = `/library/folder-d0f4e1548ad9e4f162300/${folderId}`;
+    }
+    
+    next();
+}
+
 async function extractFolderFiles(req, res, next) {
-    const files = req.files;
+    const file = req.file;
     const userId = req.user.id;
     const folderId = res.locals.folderId;
 
-    for( const file of files ) {
-    const { originalname, filename, size, path } = file;
+    const { fieldname, originalname, size } = file;
+    const filename = generateFileName(fieldname, originalname);
 
-    await createFilesFromFolder(folderId, originalname, filename, size, path, userId);
-    }
+    await createFilesFromFolder(folderId, originalname, filename, size, userId);
 
     next();
 }
+
 
 async function redirectToFolderFiles(req, res) {
     res.locals.user = req.user;
@@ -141,8 +166,10 @@ async function redirectToFolderFiles(req, res) {
 }
 
 const filesFromFolderPost = [ 
-    upload.array("folderfiles"),
+    upload.single("folderfiles"),
     checkFolderUrl,
+    sendFolderFilesToSupabase,
+    handleSupabaseErrors,
     extractFolderFiles,
     redirectToFolderFiles
 ]
