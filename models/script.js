@@ -112,7 +112,8 @@ async function getFileDetailsById(fileId) {
             size: true,
             createdAt: true,
             updatedAt: true,
-        }
+            supabasePath: true,
+        },
     });
 
     return fileDetails;
