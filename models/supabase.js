@@ -6,9 +6,11 @@ const supbaseKey = process.env.SUPABASE_KEY;
 const supabase = createClient(supbaseUrl, supbaseKey);
 
 async function uploadFile(path, file, contentType) {
-    const { data, error } = await supabase
+    const { data, error } = await supabase.storage
     .from("files")
-    .upload(path, file, { contentType });
+    .upload(path, file, {contentType});
+
+    if(error) return error;
 }
 
 module.exports = {
