@@ -5,8 +5,17 @@ const filesController = require("../controllers/filesController");
 const authLibraryRouter = require("./auth/authLibraryRouter");
 const folderController = require("../controllers/folderController");
 const error = require("../controllers/errorController");
+const editController = require("../controllers/modifyfiles/editFilesController");
+const editFolderController = require("../controllers/modifyfiles/editFoldersController");
 
 const libRouter = Router();
+
+//edit route
+libRouter.get("/files-{*splat}/:fileId/edit", editController.editFileGet);
+libRouter.get("/folder-{*splat}/:folderId/edit", editFolderController.editFolderGet);
+
+libRouter.post("/files/f1e37rg840d1sfad4/:fileId", editController.editFilePost);
+libRouter.post("/folder/k0y1o-9874ha48fdl/:fileId", editFolderController.editFolderPost);
 
 libRouter.post("/files", filesController.filesPost);
 libRouter.get("/files-{*splat}/:fileId", filesController.fileGet);
