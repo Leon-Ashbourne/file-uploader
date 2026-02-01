@@ -28,15 +28,25 @@ async function requestFilesFromFolder(req, res, next) {
     else res.render("error");
 }
 
+function modifyFolderFileDetails(files, baseUrl) {
+    const modifiedFolderFiles = files.map(file => {
+        const url = baseUrl + "/fe40lk77e1835qt00e/" + file.id;
+        file.url = url;
+        file.editFileLink = url + "/edit";
+        return file;
+    });
+
+    return modifiedFolderFiles;
+}
+
 async function updateFileWithHref(req, res, next) {
     res.locals.action = `/library/folder-d0f4e1548ad9e4f162300/${res.locals.folderId}`;
 
     const files = res.locals.files;
     const baseUrl = req.originalUrl
-    res.locals.files = files.map(file => {
-        file.url = baseUrl + "/fe40lk77e1835qt00e/" + file.id;
-        return file;
-    })
+
+    res.locals.files = modifyFolderFileDetails(files, baseUrl);
+
     next();
 }
 
