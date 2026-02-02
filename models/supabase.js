@@ -23,7 +23,16 @@ async function downloadFile(filePath) {
     return data.publicUrl;
 }
 
+async function removeFiles(files) {
+    const { data, error } = supabase.storage
+    .from("files")
+    .remove(files);
+
+    return error;
+}
+
 module.exports = {
     uploadFile,
-    downloadFile
+    downloadFile,
+    removeFiles,
 }
