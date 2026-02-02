@@ -191,6 +191,47 @@ async function uniqueUsername(username) {
     return result;
 }
 
+//get supabasepath
+async function getSupabasePath(fileId) {
+    const result = await prisma.files.findFirst({
+        where: {
+            id: fileId,
+        },
+        select: {
+            supabasePath: true,
+        },
+    });
+
+    return result;
+}
+
+//delete a file
+async function deleteFileFromDb(fileId) {
+    await prisma.files.delete({
+        where: {
+            id: fileId,
+        },
+    });
+}
+
+//delete multiple files from a folder
+async function deleteFilesFolder(folderId) {
+    await prisma.files.delete({
+        where: {
+            foldersId: folderId,
+        },
+    });
+}
+
+//delete a folder
+async function deleteFolder(folderId) {
+    await prisma.folders.delete({
+        where: {
+            id: folderId,
+        },
+    });
+}
+
 module.exports = {
     addUser,
     getUserByUsername,
@@ -204,5 +245,9 @@ module.exports = {
     createFilesFromFolder,
     updateFileName,
     updateFolderName,
-    uniqueUsername
+    uniqueUsername,
+    deleteFileFromDb,
+    deleteFilesFolder,
+    deleteFolder,
+    getSupabasePath,
 }
