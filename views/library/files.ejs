@@ -10,7 +10,14 @@
                         <li>
                             <form method="get" action=<%= file.editFileLink %>>
                                 <div>
-                                    <input type="submit" value="edit">
+                                    <input type="submit" value="edit" name="delete">
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <form method="post" action=<%= file.fileDeleteAction %>>
+                                <div>
+                                    <input type="submit" value="delete" name="delete">
                                 </div>
                             </form>
                         </li>

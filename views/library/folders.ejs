@@ -7,7 +7,14 @@
                 <li>
                     <form method="get" action=<%= folder.editFolderLink %> >
                         <div>
-                            <input type="submit" value="edit">
+                            <input type="submit" value="edit" name="delete">
+                        </div>
+                    </form>
+                </li>
+                <li>
+                    <form method="post" action=<%= folder.folderDeleteAction %>>
+                        <div>
+                            <input type="submit" value="delete" name="delete">
                         </div>
                     </form>
                 </li>
