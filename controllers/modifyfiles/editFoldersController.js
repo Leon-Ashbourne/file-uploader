@@ -55,7 +55,7 @@ async function reqFileSupabasePath(req, res, next) {
         res.locals.paths = paths;
         next();
     }
-    else reqDeleteEmptyFolder(req, res); // need to think about how to delete empty folders
+    else reqDeleteEmptyFolder(req, res);
 }
 
 async function reqDeleteFolderAndFiles(req, res, next) {
