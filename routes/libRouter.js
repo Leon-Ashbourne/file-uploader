@@ -12,6 +12,7 @@ const libRouter = Router();
 
 //edit route
 libRouter.get("/files-{*splat}/:fileId/edit", editController.editFileGet);
+libRouter.get("/folder-{*splat}/:folderId/fe40lk77e1835qt00e/:fileId/edit", editController.editFileGet);
 libRouter.get("/folder-{*splat}/:folderId/edit", editFolderController.editFolderGet);
 
 libRouter.post("/files/f1e37rg840d1sfad4/:fileId", editController.editFilePost);
