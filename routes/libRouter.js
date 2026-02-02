@@ -15,6 +15,11 @@ libRouter.get("/files-{*splat}/:fileId/edit", editController.editFileGet);
 libRouter.get("/folder-{*splat}/:folderId/fe40lk77e1835qt00e/:fileId/edit", editController.editFileGet);
 libRouter.get("/folder-{*splat}/:folderId/edit", editFolderController.editFolderGet);
 
+//delete file route
+libRouter.post("/folder-{*splat}/:folderId/fe40lk77e1835qt00e/:fileId/delete", editController.deleteFilePost);
+libRouter.post("/folder-{*splat}/:folderId/delete", editFolderController.deleteFolderPost);
+libRouter.post("/files-{*splat}/:fileId/delete", editController.deleteFilePost);
+
 libRouter.post("/files/f1e37rg840d1sfad4/:fileId", editController.editFilePost);
 libRouter.post("/folder/k0y1o-9874ha48fdl/:fileId", editFolderController.editFolderPost);
 
