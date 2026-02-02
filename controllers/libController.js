@@ -21,6 +21,7 @@ function modifyFileDetails(files, path) {
         const url = path + "/files-d0e1sd15af6e6rt" + file.OriginalName + "/" + file.id;
         file.url = url;
         file.editFileLink = url + "/edit";
+        file.fileDeleteAction = url + "/delete";
         return file;
     });
 
@@ -32,6 +33,7 @@ function modifyFolderDetails(folders, path) {
         const url = path + "/folder-d0f4e1548ad9e4f162300/" + folder.id;
         folder.url = url;
         folder.editFolderLink = url + "/edit";
+        folder.folderDeleteAction = url + "/delete";
         return folder;
     })
 

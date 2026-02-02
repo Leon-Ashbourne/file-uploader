@@ -33,6 +33,7 @@ function modifyFolderFileDetails(files, baseUrl) {
         const url = baseUrl + "/fe40lk77e1835qt00e/" + file.id;
         file.url = url;
         file.editFileLink = url + "/edit";
+        file.fileDeleteAction = url + "/delete";
         return file;
     });
 
