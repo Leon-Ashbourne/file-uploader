@@ -216,7 +216,7 @@ async function deleteFileFromDb(fileId) {
 
 //delete multiple files from a folder
 async function deleteFilesFolder(folderId) {
-    await prisma.files.delete({
+    await prisma.files.deleteMany({
         where: {
             foldersId: folderId,
         },
@@ -230,6 +230,20 @@ async function deleteFolder(folderId) {
             id: folderId,
         },
     });
+}
+
+//get supabasepaths of files under a folder
+async function getFolderFileSupabasePath(folderId) {
+    const paths = prisma.files.findMany({
+        where: {
+            foldersId: folderId,
+        },
+        select: {
+            supabasePath: true,
+        },
+    });
+
+    return paths;
 }
 
 module.exports = {
@@ -250,4 +264,5 @@ module.exports = {
     deleteFilesFolder,
     deleteFolder,
     getSupabasePath,
+    getFolderFileSupabasePath,
 }
